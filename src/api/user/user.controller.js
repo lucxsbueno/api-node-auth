@@ -3,8 +3,8 @@ const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 
 /**
- * 
- * 
+ *
+ *
  * User services
  */
 const {
@@ -125,7 +125,7 @@ module.exports = {
             }
             const comparePass = compareSync(req.body.pass, results.pass);
             if (comparePass) {
-                
+
                 comparePass.pass = undefined;
                 const jwt = sign({ comparePass: results }, "qwe1234", {
                     expiresIn: "1h"
