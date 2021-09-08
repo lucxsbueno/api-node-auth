@@ -118,7 +118,7 @@ module.exports = {
                 console.log("[controller error]: ", err);
             }
             if (!results) {
-                return res.json({
+                return res.status(500).json({
                     success: false,
                     data: { message: "E-mail ou senha inválidos. Tente novamente." }
                 });
@@ -130,13 +130,19 @@ module.exports = {
                 const jwt = sign({ comparePass: results }, "qwe1234", {
                     expiresIn: "1h"
                 });
+
+                results.pass = undefined;
+                
                 return res.json({
                     success: true,
                     token: jwt,
-                    data: { message: "Login efetuado com sucesso!" }
+                    data: {
+                        message: "Login efetuado com sucesso!",
+                        user: results
+                    }
                 });
             } else {
-                return res.json({
+                return res.status(500).json({
                     success: false,
                     data: { message: "E-mail ou senha inválidos! Tente novamente." }
                 });
