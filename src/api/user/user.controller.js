@@ -29,7 +29,7 @@ module.exports = {
                     message: "A conexão com o banco de dados falhou."
                 });
             }
-            return res.status(200).json({
+            return res.status(201).json({
                 success: true,
                 message: "Usuário criado com sucesso.",
                 data: results
@@ -61,12 +61,12 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: false,
                     data: { message: "O usuário não foi encontrado." }
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: true,
                 data: { message: "Usuário deletado com sucesso!" }
             });
@@ -81,12 +81,12 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: false,
                     data: { message: "Nenhum usuário encontrado." }
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: true,
                 data: results
             });
@@ -100,12 +100,12 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: false,
                     data: { message: "Nenhum usuário encontrado." }
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: true,
                 data: results
             });
@@ -118,7 +118,7 @@ module.exports = {
                 console.log("[controller error]: ", err);
             }
             if (!results) {
-                return res.status(500).json({
+                return res.status(401).json({
                     success: false,
                     data: { message: "E-mail ou senha inválidos. Tente novamente." }
                 });
@@ -133,7 +133,7 @@ module.exports = {
 
                 results.pass = undefined;
                 
-                return res.json({
+                return res.status(202).json({
                     success: true,
                     token: jwt,
                     data: {
@@ -142,7 +142,7 @@ module.exports = {
                     }
                 });
             } else {
-                return res.status(500).json({
+                return res.status(401).json({
                     success: false,
                     data: { message: "E-mail ou senha inválidos! Tente novamente." }
                 });

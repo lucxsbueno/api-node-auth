@@ -7,14 +7,14 @@ module.exports = {
             token = token.slice(7);
             verify(token, "qwe1234", (error, decoded) => {
                 if (error) {
-                    res.json({
+                    res.status(401).json({
                         success: false,
-                        data: { message: "Token inválido."}
+                        data: { message: "Token inválido ou expirado."}
                     });
                 } else { next(); }
             })
         } else {
-            res.json({
+            res.status(401).json({
                 success: false,
                 data: { message: "Acesso negado! Usuário não autorizado." }
             });
