@@ -36,8 +36,17 @@ DB_USER=
 DB_PASS=
 DB_NAME=auth
 ```
+
+<b>Edit 1: Criar uma senha forte para o seu jwt</b>
+
+Para criar uma senha forte para o jwt, rode o seguinte comando no terminal:
+```bash
+node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
+```
+Ele irá criar uma string com letras, números e símbolos, utilize em `SECRET_KEY=` do arquivo <b>`.env`</b>.
+
 <b>Tudo pronto! agora é só rodar:</b>
 ```bash
 npm run dev
 ```
-<b>Enjoy!<b> 😊
+<b>Enjoy!</b> 😊
