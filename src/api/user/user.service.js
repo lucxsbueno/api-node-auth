@@ -79,5 +79,18 @@ module.exports = {
                 return callBack(null, results[0]);
             }
         );
+    },
+
+    searchUser: (query, callBack) => {
+        pool.query(
+            `SELECT * FROM user WHERE name LIKE ? OR email LIKE ?`,
+            [ `%${query}%`, `%${query}%` ],
+            (err, results, fields) => {
+                if (err) {
+                    return callBack(err);
+                }
+                return callBack(null, results);
+            }
+        );
     }
 };

@@ -13,6 +13,7 @@ const {
     deleteUser,
     findUserById,
     findAllUsers,
+    searchUser,
     findUserByUserEmail
 } = require('./user.service');
 
@@ -83,7 +84,7 @@ module.exports = {
             if (!results) {
                 return res.status(404).json({
                     success: false,
-                    data: { message: "Nenhum usuário encontrado." }
+                    data: { message: "Nenhum usuário encontrado. 1" }
                 });
             }
             return res.status(200).json({
@@ -102,7 +103,7 @@ module.exports = {
             if (!results) {
                 return res.status(404).json({
                     success: false,
-                    data: { message: "Nenhum usuário encontrado." }
+                    data: { message: "Nenhum usuário encontrado. 2" }
                 });
             }
             return res.status(200).json({
@@ -112,34 +113,78 @@ module.exports = {
         });
     },
 
+    searchUser: (req, res) => {
+        searchUser(req.query.q, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            if (!results || results.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    data: { message: "Nenhum registro encontrado." }
+                });
+            }
+
+            results.forEach(user => {
+                user.pass = undefined;
+            });
+
+            return res.status(200).json({
+                success: true,
+                data: results
+            });
+        });
+    },
+
     signin: (req, res) => {
         findUserByUserEmail(req.body.email, (err, results) => {
+
             if (err) {
                 console.log("[controller error]: ", err);
             }
+
+            //if there are no records
             if (!results) {
                 return res.status(401).json({
                     success: false,
                     data: { message: "E-mail ou senha inválidos. Tente novamente." }
                 });
             }
-            const comparePass = compareSync(req.body.pass, results.pass);
-            if (comparePass) {
 
-                comparePass.pass = undefined;
-                const jwt = sign({ comparePass: results }, "qwe1234", {
-                    expiresIn: "1h"
-                });
+            //compare if password is correct
+            const isRight = compareSync(req.body.pass, results.pass);
 
+            if (isRight) {
+
+                //delete password record
                 results.pass = undefined;
-                
-                return res.status(202).json({
-                    success: true,
-                    token: jwt,
-                    data: {
-                        message: "Login efetuado com sucesso!",
-                        user: results
+
+                const jwt = {
+                    payload: { user: results },
+                    secret: "qwe1234",
+                    options: {
+                        issuer: "auth-api",
+                        algorithm: "HS256",
+                        expiresIn: "120000ms"
                     }
+                }
+
+                sign(
+                    jwt.payload,
+                    jwt.secret,
+                    jwt.options,
+                    (err, token) => {
+                    if (err) {
+                        console.log("[jwt error]: ", err);
+                    }
+
+                    return res.status(202).json({
+                        success: true,
+                        message: "Login efetuado com sucesso!",
+                        token: token,
+                        user: results
+                    });
                 });
             } else {
                 return res.status(401).json({
