@@ -10,8 +10,6 @@ module.exports = {
             token = token.slice(7);
 
             verify(token, process.env.SECRET_KEY, (error, decoded) => {
-                
-                console.log(decoded);
 
                 if (error) {
 
@@ -26,7 +24,7 @@ module.exports = {
                     if (error.name === "JsonWebTokenError") {
                         res.status(401).json({
                             success: false,
-                            data: { message: "O token fornecido é inválido."}
+                            message: "O token fornecido é inválido."
                         });
                     }
                 } else { 
@@ -36,7 +34,7 @@ module.exports = {
         } else {
             res.status(401).json({
                 success: false,
-                data: { message: "Acesso negado! Usuário não autorizado." }
+                message: "Acesso negado! Usuário não autorizado."
             });
         }
     }

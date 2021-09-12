@@ -8,7 +8,7 @@ const { checkToken } = require('../../auth/check.token');
  *
  * User controller
  */
-const { createUser, updateUser, deleteUser, findUserById, findAllUsers, searchUser, signin } = require('./user.controller');
+const { createUser, updateUser, deleteUser, findUserById, findAllUsers, searchUser, loadSession, signin } = require('./user.controller');
 
 /**
  *
@@ -16,6 +16,13 @@ const { createUser, updateUser, deleteUser, findUserById, findAllUsers, searchUs
  */
  router.post('/signin', signin);
  router.post('/signup', createUser);
+
+ /**
+  * 
+  * 
+  * load session
+  */
+router.post('/load-session', checkToken, loadSession);
 
 /**
  *

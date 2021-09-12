@@ -1,6 +1,6 @@
 const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 
-const { sign } = require('jsonwebtoken');
+const { sign, verify } = require('jsonwebtoken');
 
 /**
  *
@@ -122,7 +122,7 @@ module.exports = {
             if (!results || results.length === 0) {
                 return res.status(404).json({
                     success: false,
-                    data: { message: "Nenhum registro encontrado." }
+                    message: "Nenhum registro encontrado."
                 });
             }
 
@@ -132,9 +132,35 @@ module.exports = {
 
             return res.status(200).json({
                 success: true,
+                rows: results.length,
                 data: results
             });
         });
+    },
+
+    loadSession: (req, res) => {
+
+        let token = req.get("authorization");
+
+        console.log(token);
+
+        token = token.slice(7);
+
+        verify(token, process.env.SECRET_KEY, (err, decoded) => {
+            if (err) {
+                console.log(err);
+
+                return res.status(401).json({
+                    success: false,
+                    message: "Não autorizado."
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                token,
+                user: decoded.user
+            });
+        })
     },
 
     signin: (req, res) => {
@@ -148,7 +174,7 @@ module.exports = {
             if (!results) {
                 return res.status(401).json({
                     success: false,
-                    data: { message: "E-mail ou senha inválidos. Tente novamente." }
+                    message: "E-mail ou senha inválidos. Tente novamente."
                 });
             }
 
@@ -161,6 +187,7 @@ module.exports = {
                 results.pass = undefined;
 
                 const jwt = {
+                    //data transfer to jwt
                     payload: { user: results },
                     secret: process.env.SECRET_KEY,
                     options: {
@@ -174,6 +201,7 @@ module.exports = {
                     jwt.payload,
                     jwt.secret,
                     jwt.options,
+                    //callBack
                     (err, token) => {
                     if (err) {
                         console.log("[jwt error]: ", err);
@@ -189,7 +217,7 @@ module.exports = {
             } else {
                 return res.status(401).json({
                     success: false,
-                    data: { message: "E-mail ou senha inválidos! Tente novamente." }
+                    message: "E-mail ou senha inválidos! Tente novamente."
                 });
             }
         });
