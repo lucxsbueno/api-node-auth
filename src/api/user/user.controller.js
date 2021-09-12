@@ -84,7 +84,7 @@ module.exports = {
             if (!results) {
                 return res.status(404).json({
                     success: false,
-                    data: { message: "Nenhum usuário encontrado. 1" }
+                    data: { message: "Nenhum usuário encontrado." }
                 });
             }
             return res.status(200).json({
@@ -103,7 +103,7 @@ module.exports = {
             if (!results) {
                 return res.status(404).json({
                     success: false,
-                    data: { message: "Nenhum usuário encontrado. 2" }
+                    data: { message: "Nenhum usuário encontrado." }
                 });
             }
             return res.status(200).json({
