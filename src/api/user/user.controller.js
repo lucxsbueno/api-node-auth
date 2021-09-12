@@ -162,7 +162,7 @@ module.exports = {
 
                 const jwt = {
                     payload: { user: results },
-                    secret: "qwe1234",
+                    secret: process.env.SECRET_KEY,
                     options: {
                         issuer: "auth-api",
                         algorithm: "HS256",

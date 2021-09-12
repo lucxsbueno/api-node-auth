@@ -9,7 +9,7 @@ module.exports = {
             
             token = token.slice(7);
 
-            verify(token, "qwe1234", (error, decoded) => {
+            verify(token, process.env.SECRET_KEY, (error, decoded) => {
                 
                 console.log(decoded);
 
