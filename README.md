@@ -37,7 +37,7 @@ DB_PASS=
 DB_NAME=auth
 ```
 
-<b>Edit 1: Criar uma senha forte para o seu jwt</b>
+<b>⚠️ Crie uma senha forte para o seu jwt</b>
 
 Para criar uma senha forte para o jwt, rode o seguinte comando no terminal:
 ```bash
