@@ -1,4 +1,5 @@
 ## API de autenticação (com JWT (Json Web Token))
+Uma API REST feita com Express e MySQL, e autorização feita com JWT.
 
 ### Necessário
  - [Node](https://nodejs.org/en/download/)
